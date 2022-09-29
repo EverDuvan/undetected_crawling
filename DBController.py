@@ -20,8 +20,7 @@ def Conexion():
     lita_crawling = []
 
     try:
-        prop = Properties.get_executor()
-        #conexion_psql = prop.get_conexion_psql()
+        prop = Properties.get_executor('conexion_psql')
         conexion = psycopg2.connect(
             host=str(prop['host']),
             database=str(prop['database']),
@@ -50,13 +49,13 @@ def Conexion():
 def guardarDB(producto):
 
     try:
-
+        prop = Properties.get_executor('conexion_mysql')
         db_connection = mysql.connector.connect(
-            host="localhost",
-            user="scrap_writer",
-            password="U%awK0*%a2t6%2WTJ",
-            port="3306",
-            database='full_Web_Scraper'
+            host=str(prop['host']),
+            database=str(prop['database']),
+            user=str(prop['user']),
+            password=str(prop['password']),
+            port=str(prop['password'])
         )
 
         cursor = db_connection.cursor()

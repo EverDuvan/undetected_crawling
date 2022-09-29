@@ -1,30 +1,28 @@
 from dotenv import load_dotenv
 import os
+load_dotenv()
 
 class Properties:
-    load_dotenv()
-    
-    conexion_psql = None
-    executor = None
-    
-    
-    def __init__(self):
-        self.get_executor(self)
+    _conexion_psql = None
+    _executor = None
+    _credentials = None
 
-  
-    def get_executor(self):
-        self.executor = eval(os.getenv("executor"))
-        self.conexion_psql = self.executor['conexion_psql']
-        #print (self.conexion_psql['host'])
+    @classmethod
+    def get_executor(cls, _credentials):
+        cls._executor = eval(os.getenv("executor"))
+        cls._conexion_psql = cls._executor[_credentials]
+        return cls._conexion_psql    
 
+''' 
+if __name__ == '__main__':
+    con = Properties.get_executor('conexion_mysql')
+    print(con['port'])
 
-    def get_conexion_psql(self):
-        return self.conexion_psql
+ '''
 
 
 
 
 
-        
 
 
