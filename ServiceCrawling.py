@@ -1,6 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor
-from DBController import Conexion
-from SamsClub import *
+from DBController import *
+from SamsClub import start_crawling
+
 
 
 if __name__ == '__main__':
@@ -8,7 +9,7 @@ if __name__ == '__main__':
     try:
 
         executor = ThreadPoolExecutor(max_workers=2)
-        list_datasheet = Conexion()
+        list_datasheet = DBController.get_retailers_crawling()
 
         for datasheet in list_datasheet:
             executor.submit(start_crawling, datasheet)

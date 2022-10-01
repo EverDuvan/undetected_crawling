@@ -1,17 +1,13 @@
-from asyncio import exceptions
-from warnings import catch_warnings
 from selenium.webdriver.common.by import By
-from ProductDetailModel import ProductDetailModel
-import undetected_chromedriver as uc
-from DBController import guardarDB
+from Product import *
+from DBController import *
 from SeleniumController import start_driver, open_url
-from concurrent.futures import ThreadPoolExecutor
 
 def start_crawling(datasheet):
     try:
         driver = start_driver()
         if driver != None:
-            urls = getUrls(driver, datasheet.urlCategory)
+            urls = getUrls(driver, datasheet.url)
             driver.quit()
 
         for url in urls:
@@ -36,7 +32,7 @@ def getUrls(driver, url):
     return urlsList
 
 
-def startScrapProducts(url, datasheet):
+def startScrapProducts(url, data_sheet):
 
     try:
 
@@ -47,20 +43,18 @@ def startScrapProducts(url, datasheet):
             name = getName(driver)
             if name != None:
                 price = getPrice(driver)
-                image = getImage(driver)
                 description = getDescription(driver)
-                model = getModel(driver)
+                sku  = getSku(driver)
                 brand = getBrand(driver)
-                sku = getSku(driver)
+                model = getModel(driver)
+                image = getImage(driver)
+                product = Product(data_sheet, url, name, price, description, sku, '', brand, model, image)
+                DBController.save_product(product)
 
-        print(name)
+            print(name)
 
-        producto = ProductDetailModel(datasheet.retail, name, url, brand, model, description,
-                                      price, image, datasheet.country, datasheet.category, datasheet.subcategory, '', sku, datasheet.webName, '')
-        
 
-        #guardarDB(producto)
-        driver.quit()
+            driver.quit()
 
     except Exception as e:
         print(f'error en startScrapProducts(): {e}')

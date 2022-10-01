@@ -4,7 +4,7 @@ import psycopg2
 from selenium import webdriver
 import undetected_chromedriver as uc
 from selenium import webdriver
-from ProductDetailModel import ProductDetailModel
+from Product import ProductDetailModel
 from Proxys import proxyRandom
 import SamsClub
 from testSaveBD import guardarDB
