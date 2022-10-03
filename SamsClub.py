@@ -3,63 +3,55 @@ from Product import *
 from DBController import *
 from SeleniumController import start_driver, open_url
 
-def start_crawling(datasheet):
+
+def start_crawling(data_sheet):
     try:
+        urls = []
         driver = start_driver()
         if driver != None:
-            urls = getUrls(driver, datasheet.url)
+            urls = get_urls(driver, data_sheet.url)
             driver.quit()
 
         for url in urls:
-            startScrapProducts(url,datasheet)
+            startScrapProducts(url, data_sheet)
     except Exception as e:
         print(f'error en start_crawling(): {e}')
-        
 
-def getUrls(driver, url):
 
+def get_urls(driver, url):
     urlsList = []
-
     try:
-        open_url(url,driver)
-        
+        open_url(url, driver)
         if len(driver.find_elements(By.CSS_SELECTOR, 'div.sc-pc-medium-desktop-card > a')) > 0:
-            url = driver.find_elements(By.CSS_SELECTOR, 'div.sc-pc-medium-desktop-card > a')
+            url = driver.find_elements(
+                By.CSS_SELECTOR, 'div.sc-pc-medium-desktop-card > a')
         for i in url:
             urlsList.append(i.get_attribute('href'))
     except Exception as e:
-        print(f'error en getUrl(): {e}')
+        print(f'error en get_urls(): {e}')
     return urlsList
 
 
-def startScrapProducts(url, data_sheet):
-
+def start_homologated(url, data_sheet):
     try:
-
         driver = start_driver()
-
         if driver != None:
-            open_url(url,driver)
+            open_url(url, driver)
             name = getName(driver)
             if name != None:
                 price = getPrice(driver)
                 description = getDescription(driver)
-                sku  = getSku(driver)
+                sku = getSku(driver)
                 brand = getBrand(driver)
                 model = getModel(driver)
                 image = getImage(driver)
-                product = Product(data_sheet, url, name, price, description, sku, '', brand, model, image)
+                product = Product(data_sheet, url, name, price,
+                                  description, sku, '', brand, model, image)
                 DBController.save_product(product)
-
             print(name)
-
-
             driver.quit()
-
     except Exception as e:
-        print(f'error en startScrapProducts(): {e}')
-
-
+        print(f'error en start_homologated(): {e}')
 
 
 # ------------------------ NAME ---------------------------------------------------

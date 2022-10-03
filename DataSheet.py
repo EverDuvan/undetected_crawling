@@ -1,7 +1,6 @@
 
 class DataSheet:
-    def __init__(self, id, country, retail, country_retail, category, sub_category, url, web_name):
-    
+    def __init__(self, id, country, retail, country_retail, category, sub_category, url, web_name, brand, model):
         self.id = id
         self.country = country
         self.retail = retail
@@ -10,6 +9,5 @@ class DataSheet:
         self.sub_category = sub_category
         self.url = url
         self.web_name = web_name
-
-
-
+        self.brand = brand
+        self.model = model

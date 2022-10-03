@@ -1,5 +1,6 @@
 undetected_chromedriver
 selenium
-psycopg2-binary 
+psycopg2-binary
 mysql-connector-python
 python-dotenv
+xvfbwrapper
