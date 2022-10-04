@@ -1,9 +1,8 @@
 from concurrent.futures import ThreadPoolExecutor
-from DBController import *
+from controller.DBController import *
 from SamsClub import start_homologated
 
 
-# if __name__ == '__main__':
 try:
     executor = ThreadPoolExecutor(max_workers=2)
     list_datasheet = DBController.get_retailers_homologated()
@@ -13,4 +12,4 @@ try:
         if(web_name == 'samsclub'):
             executor.submit(start_homologated(data_sheet.url, data_sheet))
 except Exception as e:
-    print(f'error en main: {e}')
+    print(f'error en ServiceHomologated: {e}')

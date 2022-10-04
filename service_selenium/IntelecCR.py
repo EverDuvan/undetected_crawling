@@ -1,9 +1,9 @@
 from asyncio import exceptions
 from selenium.webdriver.common.by import By
-from Product import ProductDetailModel
+from model.Product import ProductDetailModel
 import undetected_chromedriver as uc
-from DBController import guardarDB
-from SeleniumController import start_driver, open_url
+from controller.DBController import guardarDB
+from controller.SeleniumController import start_driver, open_url
 from concurrent.futures import ThreadPoolExecutor
 
 def start_crawling(datasheet):

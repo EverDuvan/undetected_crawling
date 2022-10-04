@@ -1,9 +1,9 @@
-from DataSheet import *
+from DataSheet import DataSheet
+
 
 class Product:
-    
-    def __init__(self, data_sheet:DataSheet, url, name, price, description, sku, stock, brand, model, image):
 
+    def __init__(self, data_sheet: DataSheet, url, name, price, description, sku, stock, brand, model, image):
         self.country = data_sheet.country.upper()
         self.category = data_sheet.category.upper()
         self.sub_category = data_sheet.sub_category.upper()
@@ -12,7 +12,7 @@ class Product:
         self.url = url.strip()
         self.name = name.strip()
         self.price = price.strip()
-        self.description = description.strip().replace('\n',' ')
+        self.description = description.strip().replace('\n', ' ')
         self.sku = sku.strip()
         self.stock = stock.strip()
         if data_sheet.brand != None:

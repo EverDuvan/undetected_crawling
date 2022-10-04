@@ -1,7 +1,7 @@
 import psycopg2
 import mysql.connector
-from DataSheet import *
-from Properties import *
+from model import DataSheet
+from controller import PropertieController
 
 
 class DBController:
@@ -15,7 +15,7 @@ class DBController:
             if cls.connection_psql != None:
                 return cls.connection_psql
             else:
-                prop = Properties.get_executor('conexion_psql')
+                prop = PropertieController.get_executor('conexion_psql')
                 cls.connection_psql = psycopg2.connect(
                     host=str(prop['host']),
                     database=str(prop['database']),
@@ -31,7 +31,7 @@ class DBController:
             if cls.connection_mysql != None:
                 return cls.connection_mysql
             else:
-                prop = Properties.get_executor('conexion_mysql')
+                prop = PropertieController.get_executor('conexion_mysql')
                 cls.connection_mysql = mysql.connector.connect(
                     host=str(prop['host']),
                     database=str(prop['database']),
@@ -46,8 +46,8 @@ class DBController:
     def get_retailers_crawling(cls):
         list_crawling = []
         try:
-            countries = Properties.get_countries()
-            retailers = Properties.get_retailers()
+            countries = PropertieController.get_countries()
+            retailers = PropertieController.get_retailers()
 
             conection = cls.get_connection_psql()
             cur = conection.cursor()
@@ -68,8 +68,8 @@ class DBController:
     def get_retailers_homologated(cls):
         list_homologated = []
         try:
-            countries = Properties.get_countries()
-            retailers = Properties.get_retailers()
+            countries = PropertieController.get_countries()
+            retailers = PropertieController.get_retailers()
 
             conection = cls.get_connection_psql()
             cur = conection.cursor()
