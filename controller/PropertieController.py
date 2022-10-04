@@ -3,25 +3,17 @@ import os
 load_dotenv()
 
 
-class PropertieController:
-    executor = None
-    properties = None
-    credentials = None
-    retailers = None
-    countries = None
+def get_executor(credentials):
+    executor = eval(os.getenv("executor"))
+    properties = executor[credentials]
+    return properties
 
-    @classmethod
-    def get_executor(cls, credentials):
-        cls.executor = eval(os.getenv("executor"))
-        cls.properties = cls.executor[credentials]
-        return cls.properties
 
-    @classmethod
-    def get_retailers(cls):
-        cls.retailers = os.getenv('retailers')
-        return cls.retailers
+def get_retailers():
+    retailers = os.getenv('retailers')
+    return retailers
 
-    @classmethod
-    def get_countries(cls):
-        cls.countries = os.getenv('countries')
-        return cls.countries
+
+def get_countries():
+    countries = os.getenv('countries')
+    return countries

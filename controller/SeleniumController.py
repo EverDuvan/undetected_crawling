@@ -1,11 +1,13 @@
 import undetected_chromedriver as uc
-from controller import ProxyController
+from controller.ProxyController import get_proxy_random
 from xvfbwrapper import Xvfb
 import time
 
 
 def start_driver():
+
     driver = None
+
     try:
         vdisplay = Xvfb(width=800, height=1280)
         vdisplay.start()
@@ -15,15 +17,16 @@ def start_driver():
         options.add_argument(f'--disable-gpu')
         options.add_argument(f'--no-sandbox')
         options.add_argument(f'--disable-dev-shm-usage')
-        options.add_argument('--proxy-server=' +
-                             str(ProxyController.get_proxy_random()))
+        options.add_argument('--proxy-server=' + str(get_proxy_random()))
         CHROME_DRIVER_PATH = '/usr/bin/chromedriver'
         driver = uc.Chrome(executable_path=CHROME_DRIVER_PATH,
                            options=options, headless=False)
     except Exception as e:
         driver = None
         print(f'error en start_driver(): {e}')
+
     return driver
+
 
 def open_url(url, driver):
     try:
@@ -31,3 +34,11 @@ def open_url(url, driver):
         time.sleep(5)
     except Exception as e:
         print(f'error en open_url(): {e}')
+
+
+def close_quit_driver(url, driver):
+    try:
+        driver.close()
+        driver.quit()
+    except Exception as e:
+        print(f'error en close_quit_driver(): {e}')

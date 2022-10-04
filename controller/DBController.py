@@ -1,7 +1,7 @@
 import psycopg2
 import mysql.connector
-from model import DataSheet
-from controller import PropertieController
+from controller.PropertieController import get_executor, get_countries, get_retailers
+from model.DataSheet import DataSheet
 
 
 class DBController:
@@ -15,7 +15,7 @@ class DBController:
             if cls.connection_psql != None:
                 return cls.connection_psql
             else:
-                prop = PropertieController.get_executor('conexion_psql')
+                prop = get_executor('conexion_psql')
                 cls.connection_psql = psycopg2.connect(
                     host=str(prop['host']),
                     database=str(prop['database']),
@@ -31,7 +31,7 @@ class DBController:
             if cls.connection_mysql != None:
                 return cls.connection_mysql
             else:
-                prop = PropertieController.get_executor('conexion_mysql')
+                prop = get_executor('conexion_mysql')
                 cls.connection_mysql = mysql.connector.connect(
                     host=str(prop['host']),
                     database=str(prop['database']),
@@ -46,8 +46,8 @@ class DBController:
     def get_retailers_crawling(cls):
         list_crawling = []
         try:
-            countries = PropertieController.get_countries()
-            retailers = PropertieController.get_retailers()
+            countries = get_countries()
+            retailers = get_retailers()
 
             conection = cls.get_connection_psql()
             cur = conection.cursor()
@@ -58,7 +58,7 @@ class DBController:
                 list_crawling.append(
                     DataSheet(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], '', ''))
             cur.close()
-            cls.connection_psql.close()
+            # conection.close()
 
         except Exception as e:
             print(f'error en get_retailers_crawling(): {e}')
@@ -67,23 +67,23 @@ class DBController:
     @classmethod
     def get_retailers_homologated(cls):
         list_homologated = []
-        try:
-            countries = PropertieController.get_countries()
-            retailers = PropertieController.get_retailers()
+       # try:
+        countries = get_countries()
+        retailers = get_retailers()
 
-            conection = cls.get_connection_psql()
-            cur = conection.cursor()
-            cur.execute("SELECT * FROM product_homologated WHERE \"PAIS\" IN ({}) AND \"RETAILER\" IN ({})".format(
-                str(countries), str(retailers)))
-            print(str(countries), str(retailers))
-            for row in cur.fetchall():
-                list_homologated.append(
-                    DataSheet(row[0], row[2], row[5], row[2], row[3], row[4], row[1], row[5], row[6], row[7]))
-            cur.close()
-            cls.connection_psql.close()
+        conection = cls.get_connection_psql()
+        cur = conection.cursor()
+        cur.execute("SELECT * FROM product_homologated WHERE \"PAIS\" IN ({}) AND \"RETAILER\" IN ({})".format(
+            str(countries), str(retailers)))
+        print(str(countries), str(retailers))
+        for row in cur.fetchall():
+            list_homologated.append(
+                DataSheet(row[0], row[2], row[5], row[2], row[3], row[4], row[1], row[5], row[6], row[7]))
+        cur.close()
+        # conection.close()
 
-        except Exception as e:
-            print(f'error en get_retailers_homologated(): {e}')
+        # except Exception as e:
+        #print(f'error en get_retailers_homologated(): {e}')
         return list_homologated
 
     @classmethod

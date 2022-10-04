@@ -1,16 +1,16 @@
 from selenium.webdriver.common.by import By
-from model import Product
-from controller import DBController
-from controller import SeleniumController
+from model.Product import Product
+#from controller.DBController import DBController
+from controller.SeleniumController import start_driver, open_url, close_quit_driver
 
 
 def start_crawling(data_sheet):
     try:
         urls = []
-        driver = SeleniumController.start_driver()
+        driver = start_driver()
         if driver != None:
             urls = get_urls(driver, data_sheet.url)
-            driver.quit()
+            close_quit_driver(driver)
 
         for url in urls:
             start_homologated(url, data_sheet)
@@ -21,7 +21,7 @@ def start_crawling(data_sheet):
 def get_urls(driver, url):
     urls = []
     try:
-        SeleniumController.open_url(url, driver)
+        open_url(url, driver)
         if len(driver.find_elements(By.CSS_SELECTOR, 'div.sc-pc-medium-desktop-card > a')) > 0:
             elements = driver.find_elements(
                 By.CSS_SELECTOR, 'div.sc-pc-medium-desktop-card > a')
@@ -34,9 +34,9 @@ def get_urls(driver, url):
 
 def start_homologated(url, data_sheet):
     try:
-        driver = SeleniumController.start_driver()
+        driver = start_driver()
         if driver != None:
-            SeleniumController.open_url(url, driver)
+            open_url(url, driver)
             name = get_name(driver)
             if name != None:
                 price = get_price(driver)
@@ -45,11 +45,14 @@ def start_homologated(url, data_sheet):
                 brand = get_brand(driver)
                 model = get_model(driver)
                 image = get_image(driver)
-                product = Product(data_sheet, url, name, price,
-                                  description, sku, '', brand, model, image)
-                DBController.save_product(product)
+                #product = Product(data_sheet, url, name, price,
+                #                  description, sku, '', brand, model, image)
+                # DBController.save_product(product)
+            print('---------------')
+            print(url)
             print(name)
-            driver.quit()
+            print(price)
+            close_quit_driver(driver)
     except Exception as e:
         print(f'error en start_homologated(): {e}')
 

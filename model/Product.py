@@ -1,4 +1,4 @@
-from DataSheet import DataSheet
+from model.DataSheet import DataSheet
 
 
 class Product:
