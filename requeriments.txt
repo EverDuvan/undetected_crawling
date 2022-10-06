@@ -4,3 +4,6 @@ psycopg2-binary
 mysql-connector-python
 python-dotenv
 xvfbwrapper
+pandas
+sqlalchemy
+openpyxl

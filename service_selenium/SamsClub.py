@@ -1,19 +1,18 @@
 from selenium.webdriver.common.by import By
-from model.Product import Product
-#from controller.DBController import DBController
+from controller.DBController import save_product
 from controller.SeleniumController import start_driver, open_url, close_quit_driver
 
 
-def start_crawling(data_sheet):
+def start_crawling(dateframe):
     try:
         urls = []
         driver = start_driver()
         if driver != None:
-            urls = get_urls(driver, data_sheet.url)
+            urls = get_urls(driver, dateframe[6])
             close_quit_driver(driver)
 
         for url in urls:
-            start_homologated(url, data_sheet)
+            start_homologated(url, dateframe)
     except Exception as e:
         print(f'error en start_crawling(): {e}')
 
@@ -32,29 +31,23 @@ def get_urls(driver, url):
     return urls
 
 
-def start_homologated(url, data_sheet):
-    try:
-        driver = start_driver()
-        if driver != None:
-            open_url(url, driver)
-            name = get_name(driver)
-            if name != None:
-                price = get_price(driver)
-                description = get_description(driver)
-                sku = get_sku(driver)
-                brand = get_brand(driver)
-                model = get_model(driver)
-                image = get_image(driver)
-                #product = Product(data_sheet, url, name, price,
-                #                  description, sku, '', brand, model, image)
-                # DBController.save_product(product)
-            print('---------------')
-            print(url)
-            print(name)
-            print(price)
-            close_quit_driver(driver)
-    except Exception as e:
-        print(f'error en start_homologated(): {e}')
+def start_homologated(url, dateframe):
+    #try:
+    driver = start_driver()
+    if driver != None:
+        open_url(url, driver)
+        name = get_name(driver)
+        if name != None:
+            price = get_price(driver)
+            desc = get_description(driver)
+            sku = get_sku(driver)
+            brand = get_brand(driver)
+            model = get_model(driver)
+            image = get_image(driver)
+            save_product(dateframe, url, name, price, desc, sku, '', brand, model, image)
+        close_quit_driver(driver)
+    #except Exception as e:
+       # print(f'error en start_homologated(): {e}')
 
 
 def get_name(driver):
@@ -63,6 +56,7 @@ def get_name(driver):
         if len(driver.find_elements(By.XPATH, '//h1')) > 0:
             name = driver.find_element(By.XPATH, '//h1').text
     except Exception as e:
+        name = ''
         print(f'error en get_name(): {e}')
     return name
 
@@ -74,6 +68,7 @@ def get_price(driver):
             price = driver.find_element(
                 By.XPATH, '//meta[contains(@itemprop, \"price\")]').get_attribute('content')
     except Exception as e:
+        price = ''
         print(f'error en get_price(): {e}')
     return price
 
@@ -89,6 +84,7 @@ def get_description(driver):
                 list.append(element.text)
             desc = ', '.join(list)
     except Exception as e:
+        desc = ''
         print(f'error en get_description(): {e}')
     return desc
 
@@ -100,6 +96,7 @@ def get_sku(driver):
             sku = driver.find_element(
                 By.XPATH, '//meta[contains(@itemprop, \"sku\")]').get_attribute('content')
     except Exception as e:
+        sku = ''
         print(f'error en get_sku(): {e}')
     return (sku)
 
@@ -113,6 +110,7 @@ def get_brand(driver):
             if "By" in brand:
                 brand = brand.replace("By", "").strip()
     except Exception as e:
+        brand = ''
         print(f'error en get_brand(): {e}')
     return brand
 
@@ -124,6 +122,7 @@ def get_model(driver):
             model = driver.find_element(
                 By.XPATH, '//meta[contains(@itemprop, \"mpn\")]').get_attribute('content')
     except Exception as e:
+        model = ''
         print(f'error en get_model(): {e}')
     return model
 
@@ -135,5 +134,6 @@ def get_image(driver):
             image = driver.find_element(
                 By.XPATH, '//meta[contains(@property, \"og:image\")]').get_attribute('content')
     except Exception as e:
+        image = ''
         print(f'error en get_image(): {e}')
     return image

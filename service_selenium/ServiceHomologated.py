@@ -1,15 +1,19 @@
 from concurrent.futures import ThreadPoolExecutor
-from controller.DBController import DBController
+from controller.DBController import get_retailer_homologated
 from service_selenium.SamsClub import start_homologated
 
+
 def start_scrap_homologated():
-    #try:
+    # try:
     executor = ThreadPoolExecutor(max_workers=2)
-    list_datasheet = DBController.get_retailers_homologated()
-    for data_sheet in list_datasheet:
-        web_name = data_sheet.web_name.lower().replace('\'', '').replace(' ', '')
-        print(web_name)
-        if(web_name == 'samsclub'):
-            executor.submit(start_homologated(data_sheet.url, data_sheet))
-    #except Exception as e:
+
+    dataframe = get_retailer_homologated("SAM\'S CLUB")
+    for i, date in dataframe.iterrows():
+        executor.submit(start_homologated(date[1], date))
+
+    dataframe = get_retailer_homologated("VERIZON")
+    for i, date in dataframe.iterrows():
+        executor.submit(start_homologated(date[1], date))
+
+    # except Exception as e:
         #print(f'error en ServiceHomologated: {e}')

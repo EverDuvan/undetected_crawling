@@ -1,113 +1,64 @@
-import psycopg2
-import mysql.connector
-from controller.PropertieController import get_executor, get_countries, get_retailers
-from model.DataSheet import DataSheet
+from controller.DataframeController import GetDataFrame
+from controller.PropertieController import get_countries, get_retailers
+import pandas as pd
+
+product = pd.DataFrame()
+
+def get_dataframe_crawling():
+    countries = eval(get_countries())
+    retailers = eval(get_retailers())
+    print(countries)
+    print(retailers)
+    dataframe = GetDataFrame('retail_information',
+                             'conexion_psql').get_dataframe
+    dataframe = dataframe[dataframe['country'].isin(countries)]
+    dataframe = dataframe[dataframe['retail'].isin(retailers)]
+    return dataframe
 
 
-class DBController:
+def get_retailer_crawling(web_name):
+    dataframe = get_dataframe_crawling()
+    dataframe = dataframe[dataframe['webName'] == web_name]
+    return dataframe
 
-    connection_psql = None
-    connection_mysql = None
 
-    @classmethod
-    def get_connection_psql(cls):
-        try:
-            if cls.connection_psql != None:
-                return cls.connection_psql
-            else:
-                prop = get_executor('conexion_psql')
-                cls.connection_psql = psycopg2.connect(
-                    host=str(prop['host']),
-                    database=str(prop['database']),
-                    user=str(prop['user']),
-                    password=str(prop['password']))
-                return cls.connection_psql
-        except Exception as e:
-            print(f'error en get_connection_psql(): {e}')
+def get_dataframe_homologated():
+    countries = eval(get_countries())
+    retailers = eval(get_retailers())
+    print(countries)
+    print(retailers)
+    dataframe = GetDataFrame('product_homologated',
+                             'conexion_psql').get_dataframe
+    dataframe = dataframe[dataframe['PAIS'].isin(countries)]
+    dataframe = dataframe[dataframe['RETAILER'].isin(retailers)]
+    return dataframe
 
-    @classmethod
-    def get_connection_mysql(cls):
-        try:
-            if cls.connection_mysql != None:
-                return cls.connection_mysql
-            else:
-                prop = get_executor('conexion_mysql')
-                cls.connection_mysql = mysql.connector.connect(
-                    host=str(prop['host']),
-                    database=str(prop['database']),
-                    user=str(prop['user']),
-                    password=str(prop['password']),
-                    port=str(prop['password']))
-                return cls.connection_mysql
-        except Exception as e:
-            print(f'error en get_connection_mysql(): {e}')
 
-    @classmethod
-    def get_retailers_crawling(cls):
-        list_crawling = []
-        try:
-            countries = get_countries()
-            retailers = get_retailers()
+def get_retailer_homologated(web_name):
+    dataframe = get_dataframe_homologated()
+    dataframe = dataframe[dataframe['RETAILER'] == web_name]
+    return dataframe
 
-            conection = cls.get_connection_psql()
-            cur = conection.cursor()
-            cur.execute("SELECT * FROM retail_information WHERE country IN ({}) and retail in ({})".format(
-                str(countries), str(retailers)))
 
-            for row in cur.fetchall():
-                list_crawling.append(
-                    DataSheet(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], '', ''))
-            cur.close()
-            # conection.close()
-
-        except Exception as e:
-            print(f'error en get_retailers_crawling(): {e}')
-        return list_crawling
-
-    @classmethod
-    def get_retailers_homologated(cls):
-        list_homologated = []
-       # try:
-        countries = get_countries()
-        retailers = get_retailers()
-
-        conection = cls.get_connection_psql()
-        cur = conection.cursor()
-        cur.execute("SELECT * FROM product_homologated WHERE \"PAIS\" IN ({}) AND \"RETAILER\" IN ({})".format(
-            str(countries), str(retailers)))
-        print(str(countries), str(retailers))
-        for row in cur.fetchall():
-            list_homologated.append(
-                DataSheet(row[0], row[2], row[5], row[2], row[3], row[4], row[1], row[5], row[6], row[7]))
-        cur.close()
-        # conection.close()
-
-        # except Exception as e:
-        #print(f'error en get_retailers_homologated(): {e}')
-        return list_homologated
-
-    @classmethod
-    def save_product(cls, product):
-        try:
-            cursor = cls.connection_mysql.cursor()
-            sql = 'INSERT INTO product_details (PAIS, CATEGORIA, SUBCATEGORIA, WEB_NAME, RETAILER, URL, DESCRIPTIONB, PRICE, DESCRIPTIONF, SKU, SEGMENTO4, MARCA, MODELO_RETAILER, IMAGE) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)'
-            val = (product.country,
-                   product.category,
-                   product.sub_category,
-                   product.web_name,
-                   product.retail,
-                   product.url,
-                   product.name,
-                   product.price,
-                   product.description,
-                   product.sku,
-                   product.stock,
-                   product.brand,
-                   product.model,
-                   product.image)
-            cursor.execute(sql, val)
-            cls.connection_mysql.commit()
-            cursor.close()
-            cls.connection_mysql.close()
-        except Exception as e:
-            print(f'error en save_product(): {e}')
+def save_product(frame, url, name, price, desc, sku, stock, brand, model, image):
+    product['country'] = frame[2].upper()
+    product['category'] = frame[3].upper()
+    product['sub_category'] = frame[4].upper()
+    product['web_name'] = frame[5].upper()
+    product['retail'] = frame[5].upper()
+    product['url'] = url.strip()
+    product['name'] = name.strip()
+    product['price'] = price.strip()
+    product['description'] = desc.strip().replace('\n', ' ')
+    product['sku'] = sku.strip()
+    product['stock'] = stock.strip()
+    product['image'] = image.strip()
+    if frame[6] != None:
+        product['brand'] = frame[6]
+    else:
+        product['brand'] = brand.strip()
+    if frame[7] != None:
+        product['model'] = frame[7]
+    else:
+        product['model'] = model.strip()
+    print(product)

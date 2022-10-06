@@ -1,15 +1,15 @@
 from concurrent.futures import ThreadPoolExecutor
-from controller.DBController import DBController
+from controller.DBController import get_retailer_crawling
 from service_selenium.SamsClub import start_crawling
 
+
 def start_scrap_crawling():
-    try:
-        executor = ThreadPoolExecutor(max_workers=2)
-        list_datasheet = DBController.get_retailers_crawling()
-        for data_sheet in list_datasheet:
-            web_name = data_sheet.web_name.lower().replace('\'', '').replace(' ', '')
-            print(web_name)
-            if web_name == 'samsclub':
-                executor.submit(start_crawling(data_sheet))
-    except Exception as e:
-        print(f'error en ServiceCrawling: {e}')
+    # try:
+    executor = ThreadPoolExecutor(max_workers=2)
+
+    dataframe = get_retailer_crawling("verizon")
+    for i,date in dataframe.iterrows():
+        executor.submit(start_crawling(date))
+
+    # except Exception as e:
+        #print(f'error en ServiceHomologated: {e}')
