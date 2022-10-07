@@ -74,10 +74,10 @@ class SetDateFrame(GetDataFrame):
     @property
     def send_df_append(self):
         if self._credentials or self._table != '':
-            a = eval(os.getenv("basesdedatos"))
+            a = eval(os.getenv("executor"))
             credentials = a[self._credentials]
-            engine = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}'.format(
-                credentials['DB_USER'], credentials['DB_PASS'], credentials['DB_IP'], credentials['DB_PORT'], credentials['DB_NAME']))
+            engine = create_engine('mysql+mysqlconnector://{}:{}@{}:{}/{}', echo=False).format(
+            credentials['user'], credentials['password'], credentials['host'], credentials['port'], credentials['database'])
             self._dataframe.to_sql(
                 self._table, engine, schema='public', if_exists='append', index=False)
             print('¡Done!')
@@ -85,10 +85,10 @@ class SetDateFrame(GetDataFrame):
     @property
     def send_df_replace(self):
         if self._credentials or self._table != '':
-            a = eval(os.getenv("basesdedatos"))
+            a = eval(os.getenv("executor"))
             credentials = a[self._credentials]
-            engine = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}'.format(
-                credentials['DB_USER'], credentials['DB_PASS'], credentials['DB_IP'], credentials['DB_PORT'], credentials['DB_NAME']))
+            engine = create_engine('mysql+mysqlconnector://{}:{}@{}:{}/{}', echo=False).format(
+            credentials['user'], credentials['password'], credentials['host'], credentials['port'], credentials['database'])
             self._dataframe.to_sql(
                 self._table, engine, schema='public', if_exists='replace', index=False)
             print('¡Done!')

@@ -12,9 +12,16 @@ def start_crawling(dateframe):
             close_quit_driver(driver)
 
         for url in urls:
-            start_homologated(url, dateframe)
+            get_details(url, dateframe)
     except Exception as e:
         print(f'error en start_crawling(): {e}')
+
+
+def start_homologated(dataframe):
+    # try:
+    get_details(dataframe[1], dataframe)
+    # except Exception as e:
+    # print(f'error en start_homologated(): {e}')
 
 
 def get_urls(driver, url):
@@ -31,8 +38,8 @@ def get_urls(driver, url):
     return urls
 
 
-def start_homologated(url, dateframe):
-    #try:
+def get_details(url, dataframe):
+    # try:
     driver = start_driver()
     if driver != None:
         open_url(url, driver)
@@ -44,9 +51,17 @@ def start_homologated(url, dateframe):
             brand = get_brand(driver)
             model = get_model(driver)
             image = get_image(driver)
-            save_product(dateframe, url, name, price, desc, sku, '', brand, model, image)
+            print(name)
+            print(price)
+            print(desc)
+            print(sku)
+            print(brand)
+            print(model)
+            print(brand)
+            save_product(dataframe, url, name, price, desc,
+                         sku, '', brand, model, image)
         close_quit_driver(driver)
-    #except Exception as e:
+    # except Exception as e:
        # print(f'error en start_homologated(): {e}')
 
 
@@ -64,9 +79,9 @@ def get_name(driver):
 def get_price(driver):
     price = ''
     try:
-        if len(driver.find_elements(By.XPATH, '//meta[contains(@itemprop, \"price\")]')) > 0:
+        if len(driver.find_elements(By.CSS_SELECTOR, 'meta[itemprop=price]')) > 0:
             price = driver.find_element(
-                By.XPATH, '//meta[contains(@itemprop, \"price\")]').get_attribute('content')
+                By.CSS_SELECTOR, 'meta[itemprop=price]').get_attribute('content')
     except Exception as e:
         price = ''
         print(f'error en get_price(): {e}')
@@ -77,9 +92,9 @@ def get_description(driver):
     desc = ''
     try:
         list = []
-        if len(driver.find_elements(By.CSS_SELECTOR, 'div.sc-description-about-long')) > 0:
+        if len(driver.find_elements(By.CSS_SELECTOR, 'div.sc-description-about-long>p')) > 0:
             elements = driver.find_elements(
-                By.CSS_SELECTOR, 'div.sc-description-about-long > p')
+                By.CSS_SELECTOR, 'div.sc-description-about-long>p')
             for element in elements:
                 list.append(element.text)
             desc = ', '.join(list)
