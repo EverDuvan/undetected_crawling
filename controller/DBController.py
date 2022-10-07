@@ -38,25 +38,24 @@ def get_retailer_homologated(web_name):
 
 
 def save_product(df, url, name, price, desc, sku, stock, brand, model, image):
-    if product != None:
-        product['country'].append(df[2].upper())
-        product['category'].append(df[3].upper())
-        product['sub_category'].append(df[4].upper())
-        product['web_name'].append(df[5].upper())
-        product['retail'].append(df[5].upper())
-        product['url'].append(url.strip())
-        product['name'].append(name.strip())
-        product['price'].append(price.strip())
-        product['description'].append(desc.strip().replace('\n', ' '))
-        product['sku'].append(sku.strip())
-        product['stock'].append(stock.strip())
-        if df[6] != None:
-            product['brand'].append(df[6])
-        else:
-            product['brand'].append(brand.strip())
-        if df[7] != None:
-            product['model'].append(df[7])
-        else:
-            product['model'].append(model.strip())
-        product['image'].append(image.strip())
-        print(product)
+    product['country'].append(df[2].upper(),ignore_index=True)
+    product['category'].append(df[3].upper(),ignore_index=True)
+    product['sub_category'].append(df[4].upper(),ignore_index=True)
+    product['web_name'].append(df[5].upper(),ignore_index=True)
+    product['retail'].append(df[5].upper(),ignore_index=True)
+    product['url'].append(url.strip(),ignore_index=True)
+    """ product['name'].append(name.strip())
+    product['price'].append(price.strip())
+    product['description'].append(desc.strip().replace('\n', ' '))
+    product['sku'].append(sku.strip())
+    product['stock'].append(stock.strip())
+    if df[6] != None:
+        product['brand'].append(df[6])
+    else:
+        product['brand'].append(brand.strip())
+    if df[7] != None:
+        product['model'].append(df[7])
+    else:
+        product['model'].append(model.strip())
+    product['image'].append(image.strip())"""
+    print(product)
