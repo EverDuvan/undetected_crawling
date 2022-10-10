@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from controller.DBController import save_product
+from controller.PriceController import clean_price
 from controller.SeleniumController import start_driver, open_url, close_quit_driver
 
 
@@ -42,10 +43,10 @@ def get_details(url, dataframe):
     # try:
     driver = start_driver()
     if driver != None:
-        open_url(url, driver)
+        #open_url(url, driver)
         name = get_name(driver)
         if name != None:
-            price = get_price(driver)
+            price = clean_price(get_price(driver), '$')
             desc = get_description(driver)
             sku = get_sku(driver)
             brand = get_brand(driver)
@@ -58,9 +59,11 @@ def get_details(url, dataframe):
             print(brand)
             print(model)
             print(brand)
-            save_product(dataframe, url, name, price, desc,
-                         sku, '', brand, model, image)
-        close_quit_driver(driver)
+            save_product(dataframe, 'www.reloj.com', 'RELOJ', '123.45', 'UN RELOJ',
+                         '12345', 'rm_1', 'samsung', 'drere', '/htttp/image')
+            """save_product(dataframe, url, name, price, desc,
+                         sku, '', brand, model, image)"""
+        #close_quit_driver(driver)
     # except Exception as e:
        # print(f'error en start_homologated(): {e}')
 
