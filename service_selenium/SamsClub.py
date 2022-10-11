@@ -21,10 +21,10 @@ def start_crawling(dateframe):
 
 
 def start_homologated(dataframe):
-    # try:
-    get_details(dataframe[1], dataframe)
-    # except Exception as e:
-    # print(f'error en start_homologated(): {e}')
+    try:
+        get_details(dataframe[1], dataframe)
+    except Exception as e:
+        print(f'error en start_homologated(): {e}')
 
 
 def get_urls(driver, url):
@@ -42,30 +42,23 @@ def get_urls(driver, url):
 
 
 def get_details(url, dataframe):
-    # try:
-    driver = start_driver()
-    if driver != None:
-        open_url(url, driver)
-        name = get_name(driver)
-        if name != None:
-            price = clean_price(get_price(driver), '$')
-            desc = get_description(driver)
-            sku = get_sku(driver)
-            brand = get_brand(driver)
-            model = get_model(driver)
-            image = get_image(driver)
-            print(name)
-            print(price)
-            print(desc)
-            print(sku)
-            print(brand)
-            print(model)
-            print(brand)
-            p.save_product(dataframe, url, name, price, desc,
-                           sku, '', brand, model, image)
+    try:
+        driver = start_driver()
+        if driver != None:
+            open_url(url, driver)
+            name = get_name(driver)
+            if name != None:
+                price = clean_price(get_price(driver), '$')
+                desc = get_description(driver)
+                sku = get_sku(driver)
+                brand = get_brand(driver)
+                model = get_model(driver)
+                image = get_image(driver)
+                p.save_product(dataframe, url, name, price, desc,
+                               sku, '', brand, model, image)
         close_quit_driver(driver)
-    # except Exception as e:
-       # print(f'error en start_homologated(): {e}')
+    except Exception as e:
+        print(f'error en get_details(): {e}')
 
 
 def get_name(driver):
