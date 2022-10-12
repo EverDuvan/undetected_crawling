@@ -16,3 +16,11 @@ Lanzamiento:
         export DISPLAY=:99
 
       Estos comandos se ejecutan con el fin de generar una pantalla virtual para poder lanzar google-chrome con cabeza
+
+
+ruta en windows 
+CHROME_DRIVER_PATH = 'C:\\Users\\Userr\\spring-workspace\\chromedriver.exe'
+      
+ruta en ubuntu
+CHROME_DRIVER_PATH = '/usr/bin/chromedriver'
+
