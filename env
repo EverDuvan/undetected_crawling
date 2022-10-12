@@ -1,0 +1,15 @@
+executor = "{'conexion_psql' : {'host':'209.145.53.141', \
+            'database':'narbiTaIdA',\
+            'user':'sant',\
+            'password':'w7*yW7&bAasK',\
+        },  'conexion_mysql' : {'host':'localhost', \
+            'database':'full_Web_Scraper',\
+            'user':'scrap_writer',\
+            'password':'U%awK0*%a2t6%2WTJ',\
+            'port':'3306',\
+        },  'configuration' : {'mood':'homologated', \
+        },}"
+
+retailers = "['SAMS CLUB']"
+
+countries = "['USA']"
