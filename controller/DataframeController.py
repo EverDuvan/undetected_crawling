@@ -59,9 +59,9 @@ class GetDataFrame:
 
 
 class SetDateFrame(GetDataFrame):
-    def __init__(self, data_frame, table, credentials=''):
+    def __init__(self, dataframe, table, credentials=''):
         super().__init__(table, credentials)
-        self._dataframe = data_frame
+        self._dataframe = dataframe
 
     @property
     def dataframe(self):
@@ -80,7 +80,6 @@ class SetDateFrame(GetDataFrame):
             credentials['user'], credentials['password'], credentials['host'], credentials['port'], credentials['database'])
             self._dataframe.to_sql(
                 self._table, engine, schema='public', if_exists='append', index=False)
-            print('¡Done!')
 
     @property
     def send_df_replace(self):
@@ -91,4 +90,3 @@ class SetDateFrame(GetDataFrame):
             credentials['user'], credentials['password'], credentials['host'], credentials['port'], credentials['database'])
             self._dataframe.to_sql(
                 self._table, engine, schema='public', if_exists='replace', index=False)
-            print('¡Done!')
