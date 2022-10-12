@@ -5,9 +5,7 @@ import time
 
 
 def start_driver():
-
     driver = None
-
     try:
         vdisplay = Xvfb(width=800, height=1280)
         vdisplay.start()
@@ -22,9 +20,7 @@ def start_driver():
         driver = uc.Chrome(executable_path=CHROME_DRIVER_PATH,
                            options=options, headless=False)
     except Exception as e:
-        driver = None
-        print(f'error en start_driver(): {e}')
-
+        print(e)
     return driver
 
 
