@@ -9,7 +9,7 @@ def get_executor(credentials):
         properties = executor[credentials]
         return properties
     except Exception as e:
-        print(f'error en get_executor(): {e}')
+        print(f'error en get_executor() in PropertieController.py: {e}')
 
 
 def get_retailers():
@@ -17,7 +17,7 @@ def get_retailers():
         retailers = os.getenv('retailers')
         return retailers
     except Exception as e:
-        print(f'error en get_retailers(): {e}')
+        print(f'error en get_retailers() in PropertieController.py: {e}')
 
 
 def get_countries():
@@ -25,4 +25,4 @@ def get_countries():
         countries = os.getenv('countries')
         return countries
     except Exception as e:
-        print(f'error en get_countries(): {e}')
+        print(f'error en get_countries() in PropertieController.py: {e}')

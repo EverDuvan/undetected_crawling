@@ -17,14 +17,14 @@ def start_crawling(dateframe):
         for url in urls:
             get_details(url, dateframe)
     except Exception as e:
-        print(f'error en start_crawling(): {e}')
+        print(f'error en start_crawling() in SamsClub.py: {e}')
 
 
 def start_homologated(dataframe):
     try:
         get_details(dataframe[1], dataframe)
     except Exception as e:
-        print(f'error en start_homologated(): {e}')
+        print(f'error en start_homologated() in SamsClub.py: {e}')
 
 
 def get_urls(driver, url):
@@ -37,7 +37,7 @@ def get_urls(driver, url):
         for element in elements:
             urls.append(element.get_attribute('href'))
     except Exception as e:
-        print(f'error en get_urls(): {e}')
+        print(f'error en get_urls() in SamsClub.py: {e}')
     return urls
 
 
@@ -58,7 +58,7 @@ def get_details(url, dataframe):
                                sku, '', brand, model, image)
         close_quit_driver(driver)
     except Exception as e:
-        print(f'error en get_details(): {e}')
+        print(f'error en get_details() in SamsClub.py: {e}')
 
 
 def get_name(driver):
@@ -68,7 +68,7 @@ def get_name(driver):
             name = driver.find_element(By.XPATH, '//h1').text
     except Exception as e:
         name = ''
-        print(f'error en get_name(): {e}')
+        print(f'error en get_name() in SamsClub.py: {e}')
     return name
 
 
@@ -80,7 +80,7 @@ def get_price(driver):
                 By.CSS_SELECTOR, 'meta[itemprop=price]').get_attribute('content')
     except Exception as e:
         price = ''
-        print(f'error en get_price(): {e}')
+        print(f'error en get_price() in SamsClub.py: {e}')
     return price
 
 
@@ -96,7 +96,7 @@ def get_description(driver):
             desc = ', '.join(list)
     except Exception as e:
         desc = ''
-        print(f'error en get_description(): {e}')
+        print(f'error en get_description() in SamsClub.py: {e}')
     return desc
 
 
@@ -108,7 +108,7 @@ def get_sku(driver):
                 By.XPATH, '//meta[contains(@itemprop, \"sku\")]').get_attribute('content')
     except Exception as e:
         sku = ''
-        print(f'error en get_sku(): {e}')
+        print(f'error en get_sku() in SamsClub.py: {e}')
     return (sku)
 
 
@@ -122,7 +122,7 @@ def get_brand(driver):
                 brand = brand.replace("By", "").strip()
     except Exception as e:
         brand = ''
-        print(f'error en get_brand(): {e}')
+        print(f'error en get_brand() in SamsClub.py: {e}')
     return brand
 
 
@@ -134,7 +134,7 @@ def get_model(driver):
                 By.XPATH, '//meta[contains(@itemprop, \"mpn\")]').get_attribute('content')
     except Exception as e:
         model = ''
-        print(f'error en get_model(): {e}')
+        print(f'error en get_model() in SamsClub.py: {e}')
     return model
 
 
@@ -146,5 +146,5 @@ def get_image(driver):
                 By.XPATH, '//meta[contains(@property, \"og:image\")]').get_attribute('content')
     except Exception as e:
         image = ''
-        print(f'error en get_image(): {e}')
+        print(f'error en get_image() in SamsClub.py: {e}')
     return image

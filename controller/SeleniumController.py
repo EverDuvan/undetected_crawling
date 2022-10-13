@@ -15,12 +15,12 @@ def start_driver():
         options.add_argument(f'--disable-gpu')
         options.add_argument(f'--no-sandbox')
         options.add_argument(f'--disable-dev-shm-usage')
-       # options.add_argument('--proxy-server=' + str(get_proxy_random()))
+        options.add_argument('--proxy-server=' + str(get_proxy_random()))
         CHROME_DRIVER_PATH = './chromedriver'
         driver = uc.Chrome(executable_path=CHROME_DRIVER_PATH,
                            options=options, headless=False)
     except Exception as e:
-        print(e)
+        print(f'error en start_driver() in SeleniumController.py: {e}')
     return driver
 
 
@@ -29,7 +29,7 @@ def open_url(url, driver):
         driver.get(url)
         time.sleep(5)
     except Exception as e:
-        print(f'error en open_url(): {e}')
+        print(f'error en open_url() in SeleniumController.py: {e}')
 
 
 def close_quit_driver(driver):
@@ -37,4 +37,4 @@ def close_quit_driver(driver):
         driver.close()
         driver.quit()
     except Exception as e:
-        print(f'error en close_quit_driver(): {e}')
+        print(f'error en close_quit_driver() in SeleniumController.py: {e}')

@@ -26,7 +26,7 @@ def clean_price_principal(price, symbol):
                 final_price += "0"
     except Exception as e:
         final_price = '0.0'
-        print(f'error en clean_price_principal(): {e}')
+        print(f'error en clean_price_principal() in PriceController.py: {e}')
     return final_price
 
 
@@ -71,7 +71,7 @@ def clean_price(price, symbol):
             final_price = symbol + ' ' + final_price + sub_price
     except Exception as e:
         final_price = '0.0'
-        print(f'error en clean_price(): {e}')
+        print(f'error en clean_price() in PriceController.py: {e}')
     return final_price
 
 
@@ -84,5 +84,5 @@ def get_number_price(price, symbol):
                 [ele for ele in price if ele.isdigit() or ',' or '.'])
     except Exception as e:
         new_price = '0.0'
-        print(f'error en get_number_price(): {e}')
+        print(f'error en get_number_price() in PriceController.py: {e}')
     return new_price

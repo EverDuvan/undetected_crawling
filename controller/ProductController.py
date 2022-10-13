@@ -26,6 +26,7 @@ class ProductController:
                             'retail': dataframe[5].upper(), 'url': url.strip(), 'name': name.strip(), 'price': price.strip(), 'description': desc.strip().replace('\n', ' '),
                             'sku': sku.strip(), 'stock': stock.strip(), 'brand': new_brand, 'model': new_model, 'image': image}
             self.product = self.product.append(date_product, ignore_index=True)
+            SetDateFrame(self.product(),'product_information','conexion_mysql').send_df_append #BORRAR
         except Exception as e:
-            print(f'error en save_product(): {e}')
+            print(f'error en save_product() in ProductController.py: {e}')
         print(self.product)

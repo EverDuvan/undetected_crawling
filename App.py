@@ -11,4 +11,4 @@ if __name__ == '__main__':
         else:
             start_scrap_crawling()
     except Exception as e:
-        print(f'error en main principal: {e}')
+        print(f'error en main principal in App.py: {e}')
