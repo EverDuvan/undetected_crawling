@@ -1,4 +1,5 @@
 import pandas as pd
+from urllib.parse import quote
 from sqlalchemy.engine import create_engine
 from dotenv import load_dotenv
 import os
@@ -37,25 +38,31 @@ class GetDataFrame:
 
     @property
     def get_dataframe(self):
-        a = eval(os.getenv("executor"))
-        credentials = a[self._credentials]
-        engine = create_engine('postgresql+psycopg2://{}:{}@{}/{}'.format(
-            credentials['user'], credentials['password'], credentials['host'], credentials['database']))
-        query = f'SELECT * from {self._table}'
-        dataframe = pd.read_sql_query(query, engine)
-        if self._column != []:
-            dataframe = dataframe[self._column]
-        return dataframe
+        try:
+            a = eval(os.getenv("executor"))
+            credentials = a[self._credentials]
+            engine = create_engine('postgresql+psycopg2://{}:{}@{}/{}'.format(
+                credentials['user'], credentials['password'], credentials['host'], credentials['database']))
+            query = f'SELECT * from {self._table}'
+            dataframe = pd.read_sql_query(query, engine)
+            if self._column != []:
+                dataframe = dataframe[self._column]
+            return dataframe
+        except Exception as e:
+            print(f'error en get_dataframe() in DataframeController.py: {e}')
 
     @staticmethod
     def get_excel(df, table):
-        if table == '':
-            table = 'file'
-        full_path = f'{table}.xlsx'
-        with pd.ExcelWriter(full_path,
-                            engine='xlsxwriter',
-                            options={'strings_to_urls': False}) as writer:
-            df.to_excel(writer, index=False)
+        try:
+            if table == '':
+                table = 'file'
+            full_path = f'{table}.xlsx'
+            with pd.ExcelWriter(full_path,
+                                engine='xlsxwriter',
+                                options={'strings_to_urls': False}) as writer:
+                df.to_excel(writer, index=False)
+        except Exception as e:
+            print(f'error en get_excel() in DataframeController.py: {e}')
 
 
 class SetDateFrame(GetDataFrame):
@@ -73,20 +80,28 @@ class SetDateFrame(GetDataFrame):
 
     @property
     def send_df_append(self):
-        if self._credentials or self._table != '':
-            a = eval(os.getenv("executor"))
-            credentials = a[self._credentials]
-            engine = create_engine('mysql+mysqlconnector://{}:{}@{}:{}/{}', echo=False).format(
-            credentials['user'], credentials['password'], credentials['host'], credentials['port'], credentials['database'])
-            self._dataframe.to_sql(
-                self._table, engine, schema='public', if_exists='append', index=False)
+        try:
+            if self._credentials or self._table != '':
+                a = eval(os.getenv("executor"))
+                credentials = a[self._credentials]
+                date = 'mysql+pymysql://{}:{}@{}:{}/{}'.format(
+                    credentials['user'], quote(credentials['password']), credentials['host'], credentials['port'], credentials['database'])
+                engine = create_engine(date)
+                self._dataframe.to_sql(
+                    self._table, engine, schema='public', if_exists='append', index=False)
+        except Exception as e:
+            print(f'error en send_df_append() in DataframeController.py: {e}')
 
     @property
     def send_df_replace(self):
-        if self._credentials or self._table != '':
-            a = eval(os.getenv("executor"))
-            credentials = a[self._credentials]
-            engine = create_engine('mysql+mysqlconnector://{}:{}@{}:{}/{}', echo=False).format(
-            credentials['user'], credentials['password'], credentials['host'], credentials['port'], credentials['database'])
-            self._dataframe.to_sql(
-                self._table, engine, schema='public', if_exists='replace', index=False)
+        try:
+            if self._credentials or self._table != '':
+                a = eval(os.getenv("executor"))
+                credentials = a[self._credentials]
+                date = 'mysql+pymysql://{}:{}@{}:{}/{}'.format(
+                    credentials['user'], quote(credentials['password']), credentials['host'], credentials['port'], credentials['database'])
+                engine = create_engine(date)
+                self._dataframe.to_sql(
+                    self._table, engine, schema='public', if_exists='replace', index=False)
+        except Exception as e:
+            print(f'error en send_df_append() in send_df_replace.py: {e}')
