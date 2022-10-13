@@ -6,6 +6,7 @@ from controller.DataframeController import SetDateFrame
 
 p = ProductController()
 
+
 def start_scrap_homologated():
     try:
         executor = ThreadPoolExecutor(max_workers=1)
@@ -14,8 +15,8 @@ def start_scrap_homologated():
         for i, df in dataframe.iterrows():
             executor.submit(start_homologated(df))
 
-        SetDateFrame(p.product, 'product_information',
-                     'conexion_mysql').send_df_append
+        # SetDateFrame(p.product, 'product_details',
+            # 'conexion_mysql').send_df_append
     except Exception as e:
         print(
             f'error en start_scrap_homologated in ServiceHomologated.py: {e}')
