@@ -84,11 +84,10 @@ class SetDateFrame(GetDataFrame):
             if self._credentials or self._table != '':
                 a = eval(os.getenv("executor"))
                 credentials = a[self._credentials]
-                date = 'mysql+pymysql://{}:{}@{}:{}/{}'.format(
-                    credentials['user'], quote(credentials['password']), credentials['host'], credentials['port'], credentials['database'])
-                engine = create_engine(date)
+                engine = create_engine('postgresql+psycopg2://{}:{}@{}/{}'.format(
+                    credentials['user'], credentials['password'], credentials['host'], credentials['database']))
                 self._dataframe.to_sql(
-                    self._table, engine, schema='full_Web_Scraper', if_exists='append', index=False)
+                    self._table, engine, schema='public', if_exists='append', index=False)
         except Exception as e:
             print(f'error en send_df_append() in DataframeController.py: {e}')
 
@@ -98,10 +97,9 @@ class SetDateFrame(GetDataFrame):
             if self._credentials or self._table != '':
                 a = eval(os.getenv("executor"))
                 credentials = a[self._credentials]
-                date = 'mysql+pymysql://{}:{}@{}:{}/{}'.format(
-                    credentials['user'], quote(credentials['password']), credentials['host'], credentials['port'], credentials['database'])
-                engine = create_engine(date)
+                engine = create_engine('postgresql+psycopg2://{}:{}@{}/{}'.format(
+                    credentials['user'], credentials['password'], credentials['host'], credentials['database']))
                 self._dataframe.to_sql(
-                    self._table, engine, schema='full_Web_Scraper', if_exists='replace', index=False)
+                    self._table, engine, schema='public', if_exists='replace', index=False)
         except Exception as e:
-            print(f'error en send_df_append() in send_df_replace.py: {e}')
+            print(f'error en send_df_append() in DataframeController.py: {e}')

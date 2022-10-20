@@ -9,7 +9,7 @@ retailers = eval(get_retailers())
 def get_dataframe_crawling():
     try:
         dataframe = GetDataFrame('retail_information',
-                                 'conexion_psql').get_dataframe
+                                 'psql_read').get_dataframe
         dataframe = dataframe[dataframe['country'].isin(countries)]
         dataframe = dataframe[dataframe['retail'].isin(retailers)]
         return dataframe
@@ -29,7 +29,7 @@ def get_retailer_crawling(web_name):
 def get_dataframe_homologated():
     try:
         dataframe = GetDataFrame('product_homologated',
-                                 'conexion_psql').get_dataframe
+                                 'psql_read').get_dataframe
         dataframe = dataframe[dataframe['PAIS'].isin(countries)]
         dataframe = dataframe[dataframe['RETAILER'].isin(retailers)]
         return dataframe
