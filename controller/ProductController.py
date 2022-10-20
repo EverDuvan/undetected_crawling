@@ -1,6 +1,6 @@
 import pandas as pd
 
-from controller.DataframeController import SetDateFrame
+#from controller.DataframeController import SetDateFrame
 
 
 class ProductController:
@@ -26,8 +26,8 @@ class ProductController:
                             'RETAILER': dataframe[5].upper(), 'URL': url.strip(), 'DESCRIPTIONB': name.strip(), 'PRICE': price.strip(), 'DESCRIPTIONBF': desc.strip().replace('\n', ' '),
                             'SKU': sku.strip(), 'SEGMENTO4': stock.strip(), 'MARCA': new_brand, 'MODELO_RETAILER': new_model, 'IMAGE': image}
             self.product = self.product.append(date_product, ignore_index=True)
-            SetDateFrame(self.product, 'product_details',
-                         'psql_write').send_df_append
+            #SetDateFrame(self.product, 'product_details',
+                         #'psql_write').send_df_append
         except Exception as e:
             print(f'error en save_product() in ProductController.py: {e}')
         print(self.product)

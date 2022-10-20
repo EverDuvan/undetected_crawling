@@ -15,7 +15,6 @@ def start_scrap_crawling():
         for i, df in dataframe.iterrows():
             executor.submit(start_crawling(df))
 
-        # SetDateFrame(p.product, 'product_details',
-            # 'conexion_mysql').send_df_append
+        SetDateFrame(p.product, 'product_details', 'psql_write').send_df_append
     except Exception as e:
         print(f'error en start_scrap_crawling in ServiceCrawling.py: {e}')
