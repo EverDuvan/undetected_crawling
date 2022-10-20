@@ -14,7 +14,7 @@ def start_scrap_homologated():
         dataframe = get_retailer_homologated("SAMS CLUB")
         for i, df in dataframe.iterrows():
             executor.submit(start_homologated(df))
-
+        print(p.product)
         SetDateFrame(p.product, 'product_details', 'psql_write').send_df_append
     except Exception as e:
         print(
