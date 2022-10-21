@@ -1,9 +1,8 @@
 from controller.ProductController import *
 from selenium.webdriver.common.by import By
 from controller.PriceController import clean_price
+from controller.ProductController import save_product
 from controller.SeleniumController import start_driver, open_url, close_quit_driver
-
-p = ProductController()
 
 
 def start_crawling(dateframe):
@@ -22,7 +21,8 @@ def start_crawling(dateframe):
 
 def start_homologated(dataframe):
     try:
-        get_details(dataframe[1], dataframe)
+        date_product = get_details(dataframe[1], dataframe)
+        return date_product
     except Exception as e:
         print(f'error en start_homologated() in SamsClub.py: {e}')
 
@@ -54,9 +54,10 @@ def get_details(url, dataframe):
                 brand = get_brand(driver)
                 model = get_model(driver)
                 image = get_image(driver)
-                p.save_product(dataframe, url, name, price, desc,
-                               sku, '', brand, model, image)
+                date_product = save_product(dataframe, url, name, price, desc,
+                                            sku, '', brand, model, image)
         close_quit_driver(driver)
+        return date_product
     except Exception as e:
         print(f'error en get_details() in SamsClub.py: {e}')
 
