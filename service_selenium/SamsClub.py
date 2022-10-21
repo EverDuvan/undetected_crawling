@@ -1,9 +1,9 @@
 import pandas as pd
 
 from selenium.webdriver.common.by import By
+from controller.SeleniumController import start_driver, open_url, close_quit_driver
 from controller.PriceController import clean_price
 from controller.ProductController import save_product
-from controller.SeleniumController import start_driver, open_url, close_quit_driver
 
 
 def start_crawling(dateframe):
@@ -12,7 +12,7 @@ def start_crawling(dateframe):
         urls = []
         driver = start_driver()
         if driver != None:
-            urls = get_urls(driver, 'https://www.samsclub.com/b/tvs-lcd-tv-led-tv-and-plasma-tv-screens/1088', 0)
+            urls = get_urls(driver, dateframe[6], 0)
             close_quit_driver(driver)
 
         for url in urls:

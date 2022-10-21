@@ -1,9 +1,9 @@
 #from concurrent.futures import ThreadPoolExecutor
 import pandas as pd
 
+from controller.DataframeController import SetDateFrame
 from controller.DBController import get_retailer_crawling
 from service_selenium.SamsClub import start_crawling
-from controller.DataframeController import SetDateFrame
 
 
 def start_scrap_crawling():
@@ -11,9 +11,9 @@ def start_scrap_crawling():
         product = pd.DataFrame()
         #executor = ThreadPoolExecutor(max_workers=1)
 
-        #dataframe = get_retailer_crawling("samsclub")
-        #for i, df in dataframe.iterrows():
-        product = start_crawling(None)
+        dataframe = get_retailer_crawling("samsclub")
+        for i, df in dataframe.iterrows():
+            product = start_crawling(df)
 
         print("DATAFRAME LLENO >>>> "+product)
         product = product.duplicated(product.columns[~product.columns.isin(['URL'])])
