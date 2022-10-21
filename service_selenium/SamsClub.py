@@ -1,4 +1,5 @@
-from controller.ProductController import *
+import pandas as pd
+
 from selenium.webdriver.common.by import By
 from controller.PriceController import clean_price
 from controller.ProductController import save_product
@@ -7,14 +8,17 @@ from controller.SeleniumController import start_driver, open_url, close_quit_dri
 
 def start_crawling(dateframe):
     try:
+        product = pd.DataFrame()
         urls = []
         driver = start_driver()
         if driver != None:
-            urls = get_urls(driver, dateframe[6])
+            urls = get_urls(driver, 'https://www.samsclub.com/b/tvs-lcd-tv-led-tv-and-plasma-tv-screens/1088', 0)
             close_quit_driver(driver)
 
         for url in urls:
-            get_details(url, dateframe)
+            date_product = get_details(url, dateframe)
+            product = product.append(date_product, ignore_index=True)
+        return product
     except Exception as e:
         print(f'error en start_crawling() in SamsClub.py: {e}')
 
@@ -27,15 +31,31 @@ def start_homologated(dataframe):
         print(f'error en start_homologated() in SamsClub.py: {e}')
 
 
-def get_urls(driver, url):
+def get_urls(driver, url, page_count):
     urls = []
     try:
-        open_url(url, driver)
-        if len(driver.find_elements(By.CSS_SELECTOR, 'div.sc-pc-medium-desktop-card > a')) > 0:
-            elements = driver.find_elements(
-                By.CSS_SELECTOR, 'div.sc-pc-medium-desktop-card > a')
-        for element in elements:
-            urls.append(element.get_attribute('href'))
+        load = True
+        have_product = False
+        while(load):
+            if page_count == 0:
+                open_url(url, driver)
+            else:
+                open_url(url+'?offset='+str(page_count), driver)
+            if len(driver.find_elements(By.CSS_SELECTOR, 'div.sc-pc-medium-desktop-card>a')) > 0:
+                elements = driver.find_elements(
+                    By.CSS_SELECTOR, 'div.sc-pc-medium-desktop-card>a')
+                for element in elements:
+                    href = element.get_attribute('href')
+                    if href != None and href != '' and href not in urls:
+                        urls.append(href)
+                        have_product = True
+                if have_product:
+                    page_count = page_count+45
+                    have_product = False
+                else:
+                    load = False
+            else:
+                load = False
     except Exception as e:
         print(f'error en get_urls() in SamsClub.py: {e}')
     return urls
@@ -69,7 +89,6 @@ def get_name(driver):
             name = driver.find_element(By.XPATH, '//h1').text
     except Exception as e:
         name = ''
-        print(f'error en get_name() in SamsClub.py: {e}')
     return name
 
 
@@ -81,7 +100,6 @@ def get_price(driver):
                 By.CSS_SELECTOR, 'meta[itemprop=price]').get_attribute('content')
     except Exception as e:
         price = ''
-        print(f'error en get_price() in SamsClub.py: {e}')
     return price
 
 
@@ -97,7 +115,6 @@ def get_description(driver):
             desc = ', '.join(list)
     except Exception as e:
         desc = ''
-        print(f'error en get_description() in SamsClub.py: {e}')
     return desc
 
 
@@ -109,7 +126,6 @@ def get_sku(driver):
                 By.XPATH, '//meta[contains(@itemprop, \"sku\")]').get_attribute('content')
     except Exception as e:
         sku = ''
-        print(f'error en get_sku() in SamsClub.py: {e}')
     return (sku)
 
 
@@ -123,7 +139,6 @@ def get_brand(driver):
                 brand = brand.replace("By", "").strip()
     except Exception as e:
         brand = ''
-        print(f'error en get_brand() in SamsClub.py: {e}')
     return brand
 
 
@@ -135,7 +150,6 @@ def get_model(driver):
                 By.XPATH, '//meta[contains(@itemprop, \"mpn\")]').get_attribute('content')
     except Exception as e:
         model = ''
-        print(f'error en get_model() in SamsClub.py: {e}')
     return model
 
 
@@ -147,5 +161,4 @@ def get_image(driver):
                 By.XPATH, '//meta[contains(@property, \"og:image\")]').get_attribute('content')
     except Exception as e:
         image = ''
-        print(f'error en get_image() in SamsClub.py: {e}')
     return image
