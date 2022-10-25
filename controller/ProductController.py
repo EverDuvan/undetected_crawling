@@ -1,5 +1,6 @@
 import pandas as pd
 
+
 def save_product(dataframe, url, name, price, desc, sku, stock, brand, model, image):
     try:
         new_brand = ''
@@ -27,7 +28,13 @@ def save_product(dataframe, url, name, price, desc, sku, stock, brand, model, im
             'SEGMENTO4':  clean_attr(stock),
             'MARCA':  clean_attr(new_brand),
             'MODELO_RETAILER':  clean_attr(new_model),
-            'IMAGE':  clean_attr(image)
+            'IMAGE':  clean_attr(image),
+            'ROW_ID': 0,
+            'CYCLE_ID': 0,
+            'SEGMENTO1': 'NULL',
+            'SEGMENTO2': 'NULL',
+            'SEGMENTO3': 'NULL',
+            'SEGMENTO5': 'NULL'
         }
         return date_product
     except Exception as e:
@@ -44,5 +51,5 @@ def clean_attr(attr):
             if len(attr) > 250:
                 clean_attr = attr[:249]
     except Exception as e:
-        print(f'error en save_product() in ProductController.py: {e}')
+        print(f'error en clean_attr() in ProductController.py: {e}')
     return clean_attr

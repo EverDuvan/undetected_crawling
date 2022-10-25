@@ -18,7 +18,7 @@ def start_scrap_homologated():
             product = product.append(date_product, ignore_index=True)
 
         print("DATAFRAME LLENO >>>> "+product)
-        product = product.duplicated(product.columns[~product.columns.isin(['URL'])])
+        #product = product.duplicated(product.columns[~product.columns.isin(['URL'])])
         SetDateFrame(product, 'product_details', 'psql_write').send_df_append
     except Exception as e:
         print(

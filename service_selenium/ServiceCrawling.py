@@ -16,7 +16,7 @@ def start_scrap_crawling():
             product = start_crawling(df)
 
         print("DATAFRAME LLENO >>>> "+product)
-        product = product.duplicated(product.columns[~product.columns.isin(['URL'])])
+        #product = product.duplicated(product.columns[~product.columns.isin(['URL'])])
         SetDateFrame(product, 'product_details', 'psql_write').send_df_append
     except Exception as e:
         print(f'error en start_scrap_crawling in ServiceCrawling.py: {e}')
