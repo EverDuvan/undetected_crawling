@@ -26,15 +26,17 @@ def start_driver():
 
 def open_url(url, driver):
     try:
-        driver.get(url)
-        time.sleep(5)
+        if driver != None:
+            driver.get(url)
+            time.sleep(10)
     except Exception as e:
         print(f'error en open_url() in SeleniumController.py: {e}')
 
 
 def close_quit_driver(driver):
     try:
-        driver.close()
-        driver.quit()
+        if driver != None:
+            driver.close()
+            driver.quit()
     except Exception as e:
         print(f'error en close_quit_driver() in SeleniumController.py: {e}')
