@@ -16,10 +16,13 @@ def start_scrap_homologated():
             #date_product = executor.submit(start_homologated(df))
             date_product = start_homologated(df)
             product = product.append(date_product, ignore_index=True)
+            SetDateFrame(product, 'product_details', 'psql_write').send_df_append
+            print (f'product_row: {product}')
 
         print("DATAFRAME LLENO >>>> "+product)
-        #product = product.duplicated(product.columns[~product.columns.isin(['URL'])])
-        SetDateFrame(product, 'product_details', 'psql_write').send_df_append
+        product = product.duplicated(product.columns[~product.columns.isin(['URL'])])
+        product.to_csv('product.csv', index=False)
+        SetDateFrame(product, 'product_details', 'psql_write').send_df_replace
     except Exception as e:
         print(
             f'error en start_scrap_homologated in ServiceHomologated.py: {e}')
