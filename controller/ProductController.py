@@ -23,7 +23,7 @@ def save_product(dataframe, url, name, price, desc, sku, stock, brand, model, im
             'URL': url.strip(),
             'DESCRIPTIONB':  clean_attr(name),
             'PRICE':  clean_attr(price),
-            'DESCRIPTIONBF':  clean_attr(desc),
+            'DESCRIPTIONF':  clean_attr(desc),
             'SKU':  clean_attr(sku),
             'SEGMENTO4':  clean_attr(stock),
             'MARCA':  clean_attr(new_brand),
