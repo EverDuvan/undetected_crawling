@@ -6,9 +6,9 @@ from controller.PriceController import clean_price
 from controller.ProductController import save_product
 
 
-def start_crawling(dateframe):
+def start_crawling(product, dateframe):
     try:
-        product = pd.DataFrame()
+        #product = pd.DataFrame()
         urls = []
         driver = start_driver()
         if driver != None:
@@ -18,6 +18,7 @@ def start_crawling(dateframe):
         for url in urls:
             date_product = get_details(url, dateframe)
             product = product.append(date_product, ignore_index=True)
+        print (f'product : {product}')
         return product
     except Exception as e:
         print(f'error en start_crawling() in SamsClub.py: {e}')
