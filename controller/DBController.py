@@ -1,3 +1,4 @@
+import psycopg2
 from builtins import print
 from controller.DataframeController import GetDataFrame
 from controller.PropertieController import get_executor, get_countries, get_retailers
@@ -49,7 +50,7 @@ def get_retailer_homologated(web_name):
 def truncate_table():
     prop = get_executor('psql_write')
     connection = psycopg2.connect(host=str(prop['host']), database=str(
-        prop['database']), user=str(prop['user']), password=str(prop['password']))
+        prop['database']), user=str(prop['user']), password=str(prop['password']), port=str(prop['port']))
     cur = conection.cursor()
     cur.execute('TRUNCATE TABLE product_details')
     cur.close()
