@@ -52,7 +52,7 @@ def truncate_table():
         prop = get_executor('psql_write')
         connection = psycopg2.connect(host=str(prop['host']), database=str(
             prop['database']), user=str(prop['user']), password=str(prop['password']), port=str(prop['port']))
-        cur = conection.cursor()
+        cur = connection.cursor()
         cur.execute('TRUNCATE TABLE product_details')
         cur.close()
         connection.close()
