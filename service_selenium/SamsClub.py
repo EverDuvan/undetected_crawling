@@ -1,5 +1,3 @@
-import pandas as pd
-
 from selenium.webdriver.common.by import By
 from controller.SeleniumController import start_driver, open_url, close_quit_driver
 from controller.PriceController import clean_price
@@ -8,7 +6,6 @@ from controller.ProductController import save_product
 
 def start_crawling(product, dateframe):
     try:
-        #product = pd.DataFrame()
         urls = []
         driver = start_driver()
         if driver != None:
@@ -18,7 +15,6 @@ def start_crawling(product, dateframe):
         for url in urls:
             date_product = get_details(url, dateframe)
             product = product.append(date_product, ignore_index=True)
-        print (f'product : {product}')
         return product
     except Exception as e:
         print(f'error en start_crawling() in SamsClub.py: {e}')
@@ -70,13 +66,13 @@ def get_details(url, dataframe):
             name = get_name(driver)
             if name != None:
                 price = clean_price(get_price(driver), '$')
-                desc = get_description(driver)
                 sku = get_sku(driver)
+                stock = get_stock(driver)
                 brand = get_brand(driver)
                 model = get_model(driver)
                 image = get_image(driver)
-                date_product = save_product(dataframe, url, name, price, desc,
-                                            sku, '', brand, model, image)
+                date_product = save_product(dataframe, url, name, price, name,
+                                            sku, stock, brand, model, image)
         close_quit_driver(driver)
         return date_product
     except Exception as e:
@@ -96,27 +92,12 @@ def get_name(driver):
 def get_price(driver):
     price = ''
     try:
-        if len(driver.find_elements(By.CSS_SELECTOR, 'meta[itemprop=price]')) > 0:
+        if len(driver.find_elements(By.XPATH, '//meta[contains(@itemprop, \"price\")]')) > 0:
             price = driver.find_element(
-                By.CSS_SELECTOR, 'meta[itemprop=price]').get_attribute('content')
+                By.XPATH, '//meta[contains(@itemprop, \"price\")]').get_attribute('content')
     except Exception as e:
         price = ''
     return price
-
-
-def get_description(driver):
-    desc = ''
-    try:
-        list = []
-        if len(driver.find_elements(By.CSS_SELECTOR, 'div.sc-description-about-long>p')) > 0:
-            elements = driver.find_elements(
-                By.CSS_SELECTOR, 'div.sc-description-about-long>p')
-            for element in elements:
-                list.append(element.text)
-            desc = ', '.join(list)
-    except Exception as e:
-        desc = ''
-    return desc
 
 
 def get_sku(driver):
@@ -128,6 +109,19 @@ def get_sku(driver):
     except Exception as e:
         sku = ''
     return (sku)
+
+
+def get_stock(driver):
+    stock = 'true'
+    try:
+        if len(driver.find_elements(By.XPATH, '//meta[contains(@itemprop, \"availability\")]')) > 0:
+            reference = driver.find_element(
+                By.XPATH, '//meta[contains(@itemprop, \"availability\")]').get_attribute('content')
+        if reference != 'InStock':
+            stock = 'false'
+    except Exception as e:
+        stock = 'true'
+    return (stock)
 
 
 def get_brand(driver):

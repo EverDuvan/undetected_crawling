@@ -64,6 +64,7 @@ def clean_price(price, symbol):
             elif len(price) == 7:
                 point = 3
                 centinel = True
+            final_price = ''
             for i in price:
                 final_price += i
                 if centinel and i == point:
@@ -80,8 +81,8 @@ def get_number_price(price, symbol):
     try:
         if symbol in price:
             price = price.replace(symbol, '')
-            new_price = "".join(
-                [ele for ele in price if ele.isdigit() or ',' or '.'])
+        new_price = "".join(
+            [ele for ele in price if ele.isdigit() or ',' or '.'])
     except Exception as e:
         new_price = '0.0'
         print(f'error en get_number_price() in PriceController.py: {e}')
