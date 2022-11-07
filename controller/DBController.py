@@ -53,7 +53,7 @@ def truncate_table():
         connection = psycopg2.connect(host=str(prop['host']), database=str(
             prop['database']), user=str(prop['user']), password=str(prop['password']), port=str(prop['port']))
         cur = connection.cursor()
-        cur.execute('TRUNCATE TABLE product_details')
+        cur.execute('TRUNCATE product_details')
         cur.close()
         connection.close()
     except Exception as e:
