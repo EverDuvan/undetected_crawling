@@ -48,12 +48,13 @@ def get_retailer_homologated(web_name):
 
 
 def truncate_table():
-    prop = get_executor('psql_write')
-    connection = psycopg2.connect(host=str(prop['host']), database=str(
-        prop['database']), user=str(prop['user']), password=str(prop['password']), port=str(prop['port']))
-    cur = conection.cursor()
-    cur.execute('TRUNCATE TABLE product_details')
-    cur.close()
-    connection.close()
+    try:
+        prop = get_executor('psql_write')
+        connection = psycopg2.connect(host=str(prop['host']), database=str(
+            prop['database']), user=str(prop['user']), password=str(prop['password']), port=str(prop['port']))
+        cur = conection.cursor()
+        cur.execute('TRUNCATE TABLE product_details')
+        cur.close()
+        connection.close()
     except Exception as e:
         print(f'error en truncate_table(): {e}')
