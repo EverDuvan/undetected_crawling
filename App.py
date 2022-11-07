@@ -5,7 +5,7 @@ from controller.PropertieController import get_executor
 
 if __name__ == '__main__':
     try:
-        trucate_table()
+        truncate_table()
         prop = get_executor('configuration')
         mood = str(prop['mood'])
         if mood == "homologated":
