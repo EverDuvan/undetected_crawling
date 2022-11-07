@@ -84,8 +84,6 @@ class SetDateFrame(GetDataFrame):
             if self._credentials or self._table != '':
                 a = eval(os.getenv("executor"))
                 credentials = a[self._credentials]
-                """engine = create_engine('postgresql+psycopg2://{}:{}@{}/{}'.format(
-                    credentials['user'], credentials['password'], credentials['host'], credentials['database']))"""
                 engine = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}'.
                                        format(credentials['user'], credentials['password'], credentials['host'],
                                               credentials['port'], credentials['database']))
@@ -100,8 +98,6 @@ class SetDateFrame(GetDataFrame):
             if self._credentials or self._table != '':
                 a = eval(os.getenv("executor"))
                 credentials = a[self._credentials]
-                """engine = create_engine('postgresql+psycopg2://{}:{}@{}/{}'.format(
-                    credentials['user'], credentials['password'], credentials['host'], credentials['database']))"""
                 engine = create_engine('postgresql+psycopg2://{}:{}@{}:{}/{}'.
                                        format(credentials['user'], credentials['password'], credentials['host'],
                                               credentials['port'], credentials['database']))

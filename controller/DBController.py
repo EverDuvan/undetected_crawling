@@ -1,6 +1,6 @@
 from builtins import print
 from controller.DataframeController import GetDataFrame
-from controller.PropertieController import get_countries, get_retailers
+from controller.PropertieController import get_executor, get_countries, get_retailers
 
 countries = eval(get_countries())
 retailers = eval(get_retailers())
@@ -44,3 +44,15 @@ def get_retailer_homologated(web_name):
         return dataframe
     except Exception as e:
         print(f'error en get_dataframe_homologated() in DBController.py: {e}')
+
+
+def truncate_table():
+    prop = get_executor('psql_write')
+    connection = psycopg2.connect(host=str(prop['host']), database=str(
+        prop['database']), user=str(prop['user']), password=str(prop['password']))
+    cur = conection.cursor()
+    cur.execute('TRUNCATE TABLE product_details')
+    cur.close()
+    connection.close()
+    except Exception as e:
+        print(f'error en truncate_table(): {e}')

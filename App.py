@@ -1,9 +1,11 @@
 from controller.PropertieController import get_executor
 from service_selenium.ServiceHomologated import start_scrap_homologated
 from service_selenium.ServiceCrawling import start_scrap_crawling
+from controller.DbController import truncate_table
 
 if __name__ == '__main__':
     try:
+        trucate_table()
         prop = get_executor('configuration')
         mood = str(prop['mood'])
         if mood == "homologated":
