@@ -7,6 +7,7 @@ import time
 def start_driver():
     driver = None
     try:
+        user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.5304.68 Safari/537.36'
         vdisplay = Xvfb(width=800, height=1280)
         vdisplay.start()
         options = uc.ChromeOptions()
@@ -15,13 +16,23 @@ def start_driver():
         options.add_argument(f'--disable-gpu')
         options.add_argument(f'--no-sandbox')
         options.add_argument(f'--disable-dev-shm-usage')
-        options.add_argument('--proxy-server=' + str(get_proxy_random()))
+        options.add_argument(f'--user-agent='+user_agent)
+        options.add_argument(f'--proxy-server=' + str(get_proxy_random()))
         CHROME_DRIVER_PATH = './chromedriver'
         driver = uc.Chrome(executable_path=CHROME_DRIVER_PATH,
                            options=options, headless=False)
     except Exception as e:
         print(f'error en start_driver() in SeleniumController.py: {e}')
     return driver
+
+
+"""webdriver.DesiredCapabilities.CHROME['proxy'] = {
+    "httpProxy": PROXY,
+    "ftpProxy": PROXY,
+    "sslProxy": PROXY,
+    "proxyType": "MANUAL",
+}
+webdriver.DesiredCapabilities.CHROME['acceptSslCerts']=True"""
 
 
 def open_url(url, driver):
