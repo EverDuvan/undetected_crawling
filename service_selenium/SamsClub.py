@@ -66,7 +66,7 @@ def get_details(url, dataframe):
             name = get_name(driver)
             if name != None:
                 print('PRICE SIN LIMPIAR > '+get_price(driver))
-                print('PRICE LIMIPIO > '+clean_price(get_price(driver)))
+                print('PRICE LIMIPIO > '+clean_price(get_price(driver), '$'))
                 price = clean_price(get_price(driver), '$')
                 sku = get_sku(driver)
                 stock = get_stock(driver)
