@@ -98,6 +98,7 @@ def get_price(driver):
             price = driver.find_element(
                 By.XPATH, '//meta[contains(@itemprop, \"price\")]').get_attribute('content')
     except Exception as e:
+        print(f'error en get_price() in SamsClub.py: {e}')
         price = ''
     return price
 
