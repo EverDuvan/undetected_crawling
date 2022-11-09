@@ -26,7 +26,7 @@ def start_driver():
     return driver
 
 
-def open_url(url, driver):
+def open_url(driver, url):
     try:
         if driver != None:
             driver.get(url)
