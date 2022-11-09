@@ -16,9 +16,8 @@ def start_driver():
         options.add_argument(f'--disable-gpu')
         options.add_argument(f'--no-sandbox')
         options.add_argument(f'--disable-dev-shm-usage')
-        options.add_argument(f'--user-agent='+user_agent)
+        options.add_argument(f'--user-agent='+str(user_agent))
         options.add_argument(f'--proxy-server=%s' + str(get_proxy_random()))
-        print('PROXY > '+get_proxy_random())
         CHROME_DRIVER_PATH = './chromedriver'
         driver = uc.Chrome(executable_path=CHROME_DRIVER_PATH,
                            options=options, headless=False)

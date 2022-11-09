@@ -94,9 +94,9 @@ def get_name(driver):
 def get_price(driver):
     price = ''
     try:
-        if len(driver.find_elements(By.XPATH, '//meta[contains(@itemprop, \"price\")]')) > 0:
+        if len(driver.find_elements(By.CSS_SELECTOR, 'meta[itemprop=\'price\']')) > 0:
             price = driver.find_element(
-                By.XPATH, '//meta[contains(@itemprop, \"price\")]').get_attribute('content')
+                By.CSS_SELECTOR, 'meta[itemprop=\'price\']').get_attribute('content')
     except Exception as e:
         print(f'error en get_price() in SamsClub.py: {e}')
         price = ''
