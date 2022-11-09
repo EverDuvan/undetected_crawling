@@ -35,9 +35,9 @@ def get_urls(driver, url, page_count):
         have_product = False
         while(load):
             if page_count == 0:
-                open_url(url, driver)
+                open_url(driver, url)
             else:
-                open_url(url+'?offset='+str(page_count), driver)
+                open_url(driver, url+'?offset='+str(page_count))
             if len(driver.find_elements(By.CSS_SELECTOR, 'div.sc-pc-medium-desktop-card>a')) > 0:
                 elements = driver.find_elements(
                     By.CSS_SELECTOR, 'div.sc-pc-medium-desktop-card>a')
@@ -62,11 +62,9 @@ def get_details(url, dataframe):
     try:
         driver = start_driver()
         if driver != None:
-            open_url(url, driver)
+            open_url(driver, url)
             name = get_name(driver)
             if name != None:
-                print('PRICE SIN LIMPIAR > '+get_price(driver))
-                print('PRICE LIMIPIO > '+clean_price(get_price(driver), '$'))
                 price = clean_price(get_price(driver), '$')
                 sku = get_sku(driver)
                 stock = get_stock(driver)
@@ -75,6 +73,16 @@ def get_details(url, dataframe):
                 image = get_image(driver)
                 date_product = save_product(dataframe, url, name, price, name,
                                             sku, stock, brand, model, image)
+                print('URL > '+url)
+                print('NAME > '+name)
+                print('PRICE > '+price)
+                print('PRICE SIN LIMPIAR > '+get_price(driver))
+                print('SKU > '+sku)
+                print('STOCK > '+stock)
+                print('BRAND > '+brand)
+                print('MODEL > '+model)
+                print('IMAGE > '+image)
+                print('------------------------------------------')
         close_quit_driver(driver)
         return date_product
     except Exception as e:
@@ -98,7 +106,6 @@ def get_price(driver):
             price = driver.find_element(
                 By.CSS_SELECTOR, 'meta[itemprop=\'price\']').get_attribute('content')
     except Exception as e:
-        print(f'error en get_price() in SamsClub.py: {e}')
         price = ''
     return price
 
@@ -133,8 +140,8 @@ def get_brand(driver):
         if len(driver.find_elements(By.CSS_SELECTOR, 'span.sc-product-header-item-number')) > 0:
             brand = driver.find_element(
                 By.CSS_SELECTOR, 'span.sc-product-header-item-number').text
-            if "By" in brand:
-                brand = brand.replace("By", "").strip()
+            if 'By' in brand:
+                brand = brand.replace('By', '').strip()
     except Exception as e:
         brand = ''
     return brand
