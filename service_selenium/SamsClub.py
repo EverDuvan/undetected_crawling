@@ -73,6 +73,7 @@ def get_details(url, dataframe):
                 image = get_image(driver)
                 date_product = save_product(dataframe, url, name, price, name,
                                             sku, stock, brand, model, image)
+                print('------------------------------------------')
                 print('URL > '+url)
                 print('NAME > '+name)
                 print('PRICE > '+price)

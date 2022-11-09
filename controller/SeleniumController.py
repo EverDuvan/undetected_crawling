@@ -29,7 +29,7 @@ def start_driver():
 def open_url(driver, url):
     try:
         if driver != None:
-            driver.get(url)
+            driver.get(str(url))
             time.sleep(20)
     except Exception as e:
         print(f'error en open_url() in SeleniumController.py: {e}')
