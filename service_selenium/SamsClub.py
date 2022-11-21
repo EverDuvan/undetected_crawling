@@ -37,7 +37,7 @@ def get_urls(driver, url, page_count):
             if page_count == 0:
                 open_url(driver, url)
             else:
-                open_url(driver, url+'?offset='+str(page_count))
+                open_url(f'{driver}{url}?offset={str(page_count)}')
             if len(driver.find_elements(By.CSS_SELECTOR, 'div.sc-pc-medium-desktop-card>a')) > 0:
                 elements = driver.find_elements(
                     By.CSS_SELECTOR, 'div.sc-pc-medium-desktop-card>a')
@@ -74,15 +74,15 @@ def get_details(url, dataframe):
                 date_product = save_product(dataframe, url, name, price, name,
                                             sku, stock, brand, model, image)
                 print('------------------------------------------')
-                print('URL > '+url)
-                print('NAME > '+name)
-                print('PRICE > '+price)
-                print('PRICE SIN LIMPIAR > '+get_price(driver))
-                print('SKU > '+sku)
-                print('STOCK > '+stock)
-                print('BRAND > '+brand)
-                print('MODEL > '+model)
-                print('IMAGE > '+image)
+                print(f'URL > {url}')
+                print(f'NAME > {name}')
+                print(f'PRICE > {price}')
+                print(f'PRICE SIN LIMPIAR > {get_price(driver)}')
+                print(f'SKU > {sku}')
+                print(f'STOCK > {stock}')
+                print(f'BRAND > {brand}')
+                print(f'MODEL > {model}')
+                print(f'IMAGE > {image}')
                 print('------------------------------------------')
         close_quit_driver(driver)
         return date_product

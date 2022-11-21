@@ -11,16 +11,17 @@ def start_driver():
         vdisplay = Xvfb(width=800, height=1280)
         vdisplay.start()
         options = uc.ChromeOptions()
-        options.add_argument(
-            '--no-first-run --no-service-autorun --password-store=basic')
-        options.add_argument(f'--disable-gpu')
-        options.add_argument(f'--no-sandbox')
-        options.add_argument(f'--disable-dev-shm-usage')
-        options.add_argument(f'--user-agent='+str(user_agent))
-        options.add_argument(f'--proxy-server=%s' + str(get_proxy_random()))
+        options.add_argument('--no-first-run --no-service-autorun --password-store=basic')
+        options.add_argument('--disable-gpu')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        options.add_argument('--user-agent='+str(user_agent))
+        options.add_argument(f'--proxy-server={str(get_proxy_random())}')
+        print (f'proxy: {get_proxy_random()}')
         CHROME_DRIVER_PATH = './chromedriver'
         driver = uc.Chrome(executable_path=CHROME_DRIVER_PATH,
                            options=options, headless=False)
+        #driver.get('https://www.myexternalip.com/raw')
     except Exception as e:
         print(f'error en start_driver() in SeleniumController.py: {e}')
     return driver
@@ -30,7 +31,7 @@ def open_url(driver, url):
     try:
         if driver != None:
             driver.get(str(url))
-            time.sleep(20)
+            time.sleep(30)
     except Exception as e:
         print(f'error en open_url() in SeleniumController.py: {e}')
 
